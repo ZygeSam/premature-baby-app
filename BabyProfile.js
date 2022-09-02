@@ -1,119 +1,62 @@
-import React, { Component, startTransition } from 'react';
+import React, { Component, startTransition, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Pressable, Alert, TextInput, Modal, TouchableOpacity, Button, ImageBackground } from 'react-native';
+import { StyleSheet, Text, ScrollView, View, Pressable, Alert, TextInput, Modal, TouchableOpacity, Button, ImageBackground, FlatList } from 'react-native';
 
-export default class BabyProfile extends Component {
-  state = {
-    modalVisible: false
-  };
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
+
+export default function BabyProfile({ route, navigation }) {
+
+  const baby = route.params;
+  console.log(baby);
+  const babies = JSON.parse(baby);
+  console.log(baby);
+  console.log(Object.values(babies));
+  console.log(Array.isArray(babies));
+
+  function Baby(id) {
+    var headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    };
+    const url = "http://10.0.2.2:8888/prematurebabyapp/api/babies?id=" + id;
+    fetch(url, {
+      method: 'GET',
+      headers: headers,
+    }).then((response) => response.json())
+      .then((response) => {
+        navigation.push("BabyHealthInfo", response);
+      })
+      .catch((error) => { console.error("ERROR:" + error); })
   }
-  render() {
-    const { modalVisible } = this.state;
-    return (
-      <View style={styles.body} >
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Baby Health Form has been closed.");
-            this.setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.container}>
-            <View >
-              <Text style={styles.heading}>Emmanuel data</Text>
-            </View>
-            <TextInput
-              style={styles.textbox}
-              placeholder='Weight'
-              onChangeText={name => this.setState({ weight })}
-            />
-            <TextInput
-              style={styles.textbox}
-              placeholder='HeightWeight'
-              onChangeText={name => this.setState({ height })}
-            />
-            <View style={styles.password}>
-              <TextInput
-                style={styles.textbox}
-                placeholder='Temperature'
-                onChangeText={page => this.setState({ temperature })}
-              />
-            </View>
-            <View style={styles.password}>
-              <TextInput
-                style={styles.textbox}
-                placeholder='Feeding on a scale of one to 10'
-                onChangeText={page => this.setState({ feeding })}
-              />
-            </View>
-            <View>
-              <Pressable
-                style={styles.button}
-                onPress={() => { }}
-              >
-                <Text >Submit</Text>
-              </Pressable>
-            </View>
-            <StatusBar style="auto" />
-          </View>
-        </Modal>
-        <View style={styles.container}>
-          <View style={styles.heading} >
-            <Text>Premature Baby app</Text>
-            <Text style={styles.heading}>Profile</Text>
-          </View>
-          <View style={styles.information}>
-            <Text style={styles.infoText}>Name</Text>
-            <Text style={styles.ansText}>Emmanuel</Text>
-          </View>
-          <View style={styles.information}>
-            <Text style={styles.infoText}>Email</Text>
-            <Text style={styles.ansText}>Emmanuel@manuel.com</Text>
-          </View>
-          <View style={styles.information}>
-            <Text style={styles.infoText}>Babies</Text>
-            <Text style={styles.ansText}>2</Text>
-          </View>
-          <View  >
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.flat}>
+        <FlatList
+          keyExtractor={item => item.id}
+          data={babies}
+          extraData={babies.length}
+          renderItem={({ item }) => (
             <Pressable
               style={styles.button}
-              onPress={() => this.setModalVisible(true)}
+              onPress={() => { Baby(item.id) }}
             >
-              <Text style={styles.infoText}>Click Create baby profile</Text>
+              <Text style={styles.item}>
+                Name: {item.name}    {'\n'}  Age: {item.age}
+              </Text>
             </Pressable>
-          </View>
-          <View style={styles.ansText} >
-            <Pressable
-              style={styles.list}
-              onPress={() => { }}
-            >
-              <Text >Emmanuel</Text>
-            </Pressable>
-            <Pressable
-              style={styles.list}
-              onPress={() => { }}
-            >
-              <Text >Daniel</Text>
-            </Pressable>
-          </View>
-          <StatusBar style="auto" />
-        </View>
+          )}
+        />
       </View>
-    );
-  }
-
+    </View>
+  );
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 10,
-    backgroundColor: '#ff',
-    padding: 1
+    backgroundColor: 'yellow',
   },
   create: {
     fontStyle: 'bold',
@@ -126,12 +69,6 @@ const styles = StyleSheet.create({
     fontStyle: 'bold',
     fontSize: 20,
     backgroundColor: 'lightgreen',
-    padding: 20
-  },
-  profile: {
-    fontStyle: 'bold',
-    fontSize: 20,
-    backgroundColor: 'azure',
     padding: 20
   },
   information: {
@@ -161,8 +98,24 @@ const styles = StyleSheet.create({
     margin: 8,
     fontStyle: 'italic',
     fontSize: 30,
-    color: 'azure',
+    color: 'white',
     padding: 5,
-    backgroundColor: 'blue',
-  }
+    backgroundColor: 'teal',
+  },
+  modal: {
+    height: 300,
+    alignContent: 'center'
+  },
+  flat: {
+    backgroundColor: 'teal',
+    color: 'teal'
+  },
+  item: {
+    marginHorizontal: 10,
+    marginTop: 24,
+    padding: 30,
+    color: 'teal',
+    backgroundColor: 'azure',
+    fontSize: 24,
+  },
 });

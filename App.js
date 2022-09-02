@@ -5,7 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ParentSignup from './ParentSignup';
 import ParentLogin from './ParentLogin';
 import ParentProfile from './ParentProfile';
+import BabyInfo from './BabyInfo';
 import BabyProfile from './BabyProfile';
+import BabyHealthInfo from './BabyHealthInfo';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -16,6 +18,8 @@ export default function App() {
         <Stack.Screen name="LogIn" component={ParentLogin} />
         <Stack.Screen name="Dashboard" component={ParentProfile} />
         <Stack.Screen name="BabyProfile" component={BabyProfile} />
+        <Stack.Screen name="BabyHealthInfo" component={BabyHealthInfo} />
+        <Stack.Screen name="BabyInfo" component={BabyInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,4 +1,4 @@
-import React, { Component, startTransition, useState } from 'react';
+import React, { Component, startTransition, useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, ScrollView, View, Pressable, Alert, TextInput, Modal, TouchableOpacity, Button, ImageBackground, FlatList } from 'react-native';
 
@@ -7,44 +7,26 @@ export default function ParentProfile({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [age, setAge] = useState();
   const [name, setName] = useState();
-  const [babies, setBabies] = useState();
+  const { firstname, lastname, id } = route.params;
+
 
   function allBabies(props) {
     var headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    const url = "http://10.0.2.2/prematurebabyapp/api/babies?parent_id=" + props;
+    const url = "http://10.0.2.2:8888/prematurebabyapp/api/babies?parent_id=" + props;
     fetch(url, {
       method: 'GET',
       headers: headers,
     }).then((response) => response.json())
       .then((response) => {
-        setBabies(response);
-        console.log(response);
+        navigation.push("BabyProfile", response);
       })
       .catch((error) => { console.error("ERROR:" + error); })
   }
 
-  function Babies(props) {
-    var headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    };
-
-    fetch("http://10.0.2.2/prematurebabyapp/api/babies?id=" + props.id, {
-      method: 'GET',
-      headers: headers,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setBabies(response);
-        return (babies);
-      })
-      .catch((error) => { console.error("ERROR:" + error); })
-  }
-
-  CreateBaby = (id) => {
+  function CreateBaby(id) {
     var Name = name.name;
     var Age = age.age;
     var Id = id
@@ -60,7 +42,7 @@ export default function ParentProfile({ route, navigation }) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       };
-      fetch("http://10.0.2.2/prematurebabyapp/api/babies/add.php", {
+      fetch("http://10.0.2.2:8888/prematurebabyapp/api/babies/add.php", {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(Data)
@@ -75,7 +57,9 @@ export default function ParentProfile({ route, navigation }) {
         .catch((error) => { console.error("ERROR:" + error); })
     }
   }
-  const { firstname, lastname, id } = route.params;
+
+
+
   return (
     <View style={styles.body} >
       <Modal
@@ -129,8 +113,6 @@ export default function ParentProfile({ route, navigation }) {
           <Text style={styles.ansText}>{(lastname)}</Text>
         </View>
         <View style={styles.information}>
-          <Text style={styles.infoText}>Babies</Text>
-          <Text style={styles.ansText}>4</Text>
         </View>
         <View  >
           <Pressable
@@ -146,16 +128,7 @@ export default function ParentProfile({ route, navigation }) {
             <Text style={styles.infoText}>View Babies</Text>
           </Pressable>
         </View>
-        <View style={styles.flat}>
 
-          <FlatList
-            data={babies}
-            renderItem={({ item }) => (
-              <Text style={styles.item}>{item.name}</Text>
-            )}
-          />
-
-        </View>
         <StatusBar style="auto" />
       </View>
     </View>
@@ -214,6 +187,8 @@ const styles = StyleSheet.create({
   button: {
     margin: 8,
     fontStyle: 'italic',
+    paddingVertical: 20,
+    textAlign: 'center',
     fontSize: 30,
     color: 'white',
     padding: 5,

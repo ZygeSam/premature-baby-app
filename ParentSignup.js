@@ -42,7 +42,7 @@ export default class ParentSignup extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       };
-      var url = "http://10.0.2.2/prematurebabyapp/api/parents/add.php";
+      var url = "http://10.0.2.2:8888/prematurebabyapp/api/parents/add.php";
       fetch(url, {
         method: 'POST',
         headers: headers,
