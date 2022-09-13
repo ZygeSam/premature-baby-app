@@ -33,7 +33,7 @@ export default class ParentLogin extends Component {
         'Content-Type': 'application/json'
       };
 
-      fetch("http://10.0.2.2:8888/prematurebabyapp/api/parents/login.php", {
+      fetch("http://10.0.2.2/prematurebabyapp/api/parents/login.php", {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(Data)

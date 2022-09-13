@@ -17,7 +17,7 @@ export default function BabyProfile({ route, navigation }) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    const url = "http://10.0.2.2:8888/prematurebabyapp/api/babies?id=" + id;
+    const url = "http://10.0.2.2/prematurebabyapp/api/babies?id=" + id;
     fetch(url, {
       method: 'GET',
       headers: headers,

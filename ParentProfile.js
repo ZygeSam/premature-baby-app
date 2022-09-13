@@ -15,7 +15,7 @@ export default function ParentProfile({ route, navigation }) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    const url = "http://10.0.2.2:8888/prematurebabyapp/api/babies?parent_id=" + props;
+    const url = "http://10.0.2.2/prematurebabyapp/api/babies?parent_id=" + props;
     fetch(url, {
       method: 'GET',
       headers: headers,
@@ -42,7 +42,7 @@ export default function ParentProfile({ route, navigation }) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       };
-      fetch("http://10.0.2.2:8888/prematurebabyapp/api/babies/add.php", {
+      fetch("http://10.0.2.2/prematurebabyapp/api/babies/add.php", {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(Data)

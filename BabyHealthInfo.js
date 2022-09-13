@@ -37,7 +37,7 @@ export default function ParentSignup({ route, navigation }) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       };
-      var url = "http://10.0.2.2:8888/prematurebabyapp/api/babyhealth/add.php";
+      var url = "http://10.0.2.2/prematurebabyapp/api/babyhealth/add.php";
       fetch(url, {
         method: 'POST',
         headers: headers,
@@ -58,7 +58,7 @@ export default function ParentSignup({ route, navigation }) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     };
-    var url = "http://10.0.2.2:8888/prematurebabyapp/api/babyhealth?id=" + id;
+    var url = "http://10.0.2.2/prematurebabyapp/api/babyhealth?id=" + id;
     fetch(url, {
       method: 'GET',
       headers: headers
